@@ -6,6 +6,15 @@
   "repository": "git@github.com:joshgillies/picocomponent.git",
   "author": "Josh Gillies <github@josh.gl>",
   "license": "MIT",
+  "keywords": [
+    "dom",
+    "html",
+    "template",
+    "component",
+    "fast",
+    "performance",
+    "universal"
+  ],
   "scripts": {
     "test": "standard"
   },
