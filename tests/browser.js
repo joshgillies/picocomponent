@@ -2,7 +2,7 @@ var PicoComponent = require('../')
 var Test = require('./component')
 var test = require('tape')
 
-test('notify "_render" requirement', function (t) {
+test('notify "render" requirement', function (t) {
   t.plan(1)
   var c = new PicoComponent()
   t.throws(c.render.bind(c))
@@ -22,28 +22,6 @@ test('render api', function (t) {
   t.equal(el.innerText, 'testing', 'content updated')
 })
 
-test('update api', function (t) {
-  t.plan(2)
-
-  function Update () {
-    Test.call(this)
-  }
-
-  Update.prototype = Object.create(Test.prototype)
-
-  Update.prototype._update = function () {
-    t.ok(true, 'update called')
-    return false
-  }
-
-  var c = new Update()
-  var el = c.render('test')
-
-  el = c.render('testing') // trigger update
-
-  t.equal(el.innerText, 'test', 'content unchanged')
-})
-
 test('load api', function (t) {
   t.plan(1)
 
@@ -53,7 +31,7 @@ test('load api', function (t) {
 
   Load.prototype = Object.create(Test.prototype)
 
-  Load.prototype._load = function () {
+  Load.prototype.load = function () {
     t.ok(true, 'load called')
   }
 
@@ -72,7 +50,7 @@ test('unload api', function (t) {
 
   Unload.prototype = Object.create(Test.prototype)
 
-  Unload.prototype._unload = function () {
+  Unload.prototype.unload = function () {
     t.ok(true, 'unload called')
   }
 

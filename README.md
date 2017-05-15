@@ -17,7 +17,7 @@ function Button () {
 
 Button.prototype = Object.create(PicoComponent.prototype)
 
-Button.prototype._render = function render (text) {
+Button.prototype.render = function render (text) {
   this.el.innerText = text
   return this.el
 }
@@ -36,7 +36,7 @@ It may seem that way, but seriously this exists as a result of other component s
 libraries such as [`nanomorph`][nanomorph] and [`morphdom`][morph].
 
 For this reason `picocomponent` aims to be more general purpose, leaving DOM diffing strategies up to the consumer,
-while still providing useful features such as `update` hooks, and `load` / `unload` event listeners by integrating [`on-load`][on-load].
+while still providing useful features such as `load` / `unload` event listeners by integrating [`on-load`][on-load].
 
 ### Have you gone too far?
 
