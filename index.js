@@ -6,25 +6,11 @@ function PicoComponent () {
   this._element = null
 }
 
-PicoComponent.prototype.render = function render () {
+PicoComponent.prototype.upgrade = function upgrade () {
   var self = this
 
-  if (
-    this._element &&
-    (this._update &&
-    !this._update.apply(this, arguments))
-  ) {
-    return this._element
-  }
-
-  this._element = this._render.apply(this, arguments)
-
-  if (
-    this._hasWindow &&
-    this._loaded === false &&
-    (this._load || this._unload)
-  ) {
-    return onload(
+  if (this._load || this._unload) {
+    onload(
       this._element,
       function load (el) {
         self._loaded = true
@@ -43,6 +29,23 @@ PicoComponent.prototype.render = function render () {
   }
 
   return this._element
+}
+
+PicoComponent.prototype.update = function update () {
+  if (
+    (!this._element || !this._update) ||
+    this._update.apply(this, arguments)
+  ) {
+    this._element = this._render.apply(this, arguments)
+  }
+
+  return this._element
+}
+
+PicoComponent.prototype.render = function render () {
+  return this._hasWindow && this._loaded === false
+    ? this.update.apply(this, arguments) && this.upgrade()
+    : this.update.apply(this, arguments)
 }
 
 PicoComponent.prototype._render = function _render () {
