@@ -45,5 +45,9 @@ PicoComponent.prototype.render = function render () {
   return this._element
 }
 
+PicoComponent.prototype._render = function _render () {
+  throw new Error('picocomponent: _render should be implemented!')
+}
+
 module.exports = PicoComponent
 module.exports.default = module.exports
