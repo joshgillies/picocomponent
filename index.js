@@ -28,13 +28,13 @@ PicoComponent.prototype.render = function render () {
       this._element,
       function load (el) {
         self._loaded = true
-        window.requestAnimationFrame(function () {
+        self._load && window.requestAnimationFrame(function () {
           self._load(el)
         })
       },
       function unload (el) {
         self._loaded = false
-        window.requestAnimationFrame(function () {
+        self._unload && window.requestAnimationFrame(function () {
           self._unload(el)
         })
       },
