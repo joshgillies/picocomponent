@@ -17,12 +17,12 @@ test('basic server', function (t) {
 
   Server.prototype = Object.create(Test.prototype)
 
-  Server.prototype.load = function () {
-    t.fail('load called')
+  Server.prototype.connect = function () {
+    t.fail('connect called')
   }
 
-  Server.prototype.unload = function () {
-    t.fail('unload called')
+  Server.prototype.disconnect = function () {
+    t.fail('disconnect called')
   }
 
   var c = new Server()
