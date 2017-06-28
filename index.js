@@ -1,52 +1,42 @@
 var onload = require('on-load')
+var hasWindow = typeof window !== 'undefined'
 
 function PicoComponent () {
-  this._hasWindow = typeof window !== 'undefined'
-  this._loaded = false
-  this._element = null
+  var self = this
+  var element = null
+  var connected = false
+  var connectCallback = this.connect
+  var disconnectCallback = this.disconnect
+
+  Object.defineProperty(this, 'el', {
+    get: function () {
+      return element
+    },
+    set: function (newElement) {
+      element = newElement
+      if (hasWindow && !connected && (connectCallback || disconnectCallback)) {
+        onload(element, connect, disconnect, this)
+      }
+    }
+  })
+
+  function connect () {
+    connected = true
+    if (connectCallback) {
+      window.requestAnimationFrame(connectCallback.bind(self))
+    }
+  }
+
+  function disconnect () {
+    connected = false
+    if (disconnectCallback) {
+      window.requestAnimationFrame(disconnectCallback.bind(self))
+    }
+  }
 }
 
 PicoComponent.prototype.render = function render () {
-  var self = this
-
-  if (
-    this._element &&
-    (this._update &&
-    !this._update.apply(this, arguments))
-  ) {
-    return this._element
-  }
-
-  this._element = this._render.apply(this, arguments)
-
-  if (
-    this._hasWindow &&
-    this._loaded === false &&
-    (this._load || this._unload)
-  ) {
-    return onload(
-      this._element,
-      function load (el) {
-        self._loaded = true
-        self._load && window.requestAnimationFrame(function () {
-          self._load(el)
-        })
-      },
-      function unload (el) {
-        self._loaded = false
-        self._unload && window.requestAnimationFrame(function () {
-          self._unload(el)
-        })
-      },
-      this
-    )
-  }
-
-  return this._element
-}
-
-PicoComponent.prototype._render = function _render () {
-  throw new Error('picocomponent: _render should be implemented!')
+  throw new Error('picocomponent: render should be implemented!')
 }
 
 module.exports = PicoComponent

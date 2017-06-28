@@ -7,8 +7,9 @@ function Test (opts) {
 
 Test.prototype = Object.create(PicoComponent.prototype)
 
-Test.prototype._render = function render (text) {
-  return html`<div>${text}</div>`
+Test.prototype.render = function render (text) {
+  this.el = html`<div>${text}</div>`
+  return this.el
 }
 
 module.exports = Test
