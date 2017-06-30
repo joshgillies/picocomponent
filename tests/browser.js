@@ -41,6 +41,26 @@ test('connect api', function (t) {
   document.body.appendChild(el) // trigger connect callback
 })
 
+test('alias connect api', function (t) {
+  t.plan(1)
+
+  function Connect () {
+    Test.call(this)
+    this.connect = this.load
+  }
+
+  Connect.prototype = Object.create(Test.prototype)
+
+  Connect.prototype.load = function () {
+    t.ok(true, 'connect alias called')
+  }
+
+  var c = new Connect()
+  var el = c.render('test')
+
+  document.body.appendChild(el) // trigger connect callback
+})
+
 test('disconnect api', function (t) {
   t.plan(1)
 
@@ -52,6 +72,28 @@ test('disconnect api', function (t) {
 
   Disconnect.prototype.disconnect = function () {
     t.ok(true, 'disconnect called')
+  }
+
+  var c = new Disconnect()
+  var el = c.render('test')
+
+  document.body.appendChild(el) // trigger connect
+
+  document.body.innerHTML = '' // trigger disconnect
+})
+
+test('alias disconnect api', function (t) {
+  t.plan(1)
+
+  function Disconnect () {
+    Test.call(this)
+    this.disconnect = this.unload
+  }
+
+  Disconnect.prototype = Object.create(Test.prototype)
+
+  Disconnect.prototype.unload = function () {
+    t.ok(true, 'disconnect alias called')
   }
 
   var c = new Disconnect()

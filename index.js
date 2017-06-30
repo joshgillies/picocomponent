@@ -5,8 +5,6 @@ function PicoComponent () {
   var self = this
   var element = null
   var connected = false
-  var connectCallback = this.connect
-  var disconnectCallback = this.disconnect
 
   Object.defineProperty(this, 'el', {
     get: function () {
@@ -14,7 +12,7 @@ function PicoComponent () {
     },
     set: function (newElement) {
       element = newElement
-      if (hasWindow && !connected && (connectCallback || disconnectCallback)) {
+      if (hasWindow && !connected && (this.connect || this.disconnect)) {
         onload(element, connect, disconnect, this)
       }
     }
@@ -22,15 +20,15 @@ function PicoComponent () {
 
   function connect () {
     connected = true
-    if (connectCallback) {
-      window.requestAnimationFrame(connectCallback.bind(self))
+    if (self.connect) {
+      window.requestAnimationFrame(self.connect.bind(self))
     }
   }
 
   function disconnect () {
     connected = false
-    if (disconnectCallback) {
-      window.requestAnimationFrame(disconnectCallback.bind(self))
+    if (self.disconnect) {
+      window.requestAnimationFrame(self.disconnect.bind(self))
     }
   }
 }
